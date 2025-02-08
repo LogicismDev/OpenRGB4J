@@ -1,8 +1,40 @@
 # OpenRGB4J - OpenRGB Java Client
-
+[![](https://jitpack.io/v/LogicismDev/OpenRGB4J.svg)](https://jitpack.io/#LogicismDev/OpenRGB4J)
 An updated OpenRGB Java Client made to update for the latest OpenRGB Protocol.
 
 ## Usage
+Gradle
+```css
+dependencyResolutionManagement {
+	repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+	repositories {
+		mavenCentral()
+		maven { url 'https://jitpack.io' }
+	}
+}
+
+dependencies {
+    implementation 'com.github.LogicismDev:OpenRGB4J:v1.0'
+}
+```
+
+Maven
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+<dependencies>
+    <dependency>
+        <groupId>com.github.LogicismDev</groupId>
+        <artifactId>OpenRGB4J</artifactId>
+        <version>v1.0</version>
+    </dependency>
+</dependencies>
+```
+
 To start instantiating the OpenRGB client class, use the following code below as an example.
 
 ```java
