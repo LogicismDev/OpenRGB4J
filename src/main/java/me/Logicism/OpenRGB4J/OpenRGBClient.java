@@ -46,7 +46,7 @@ public class OpenRGBClient {
     /**
      * Connects to the OpenRGB Server which retrieves the protocol version and then sets the client name
      *
-     * @throws IOException
+     * @throws IOException Throws when the buffer failed to send or read the message
      */
     public void connect() throws IOException {
         socket = new Socket();
@@ -60,7 +60,7 @@ public class OpenRGBClient {
     /**
      * Disconnects from the OpenRGB Server if the client is connected
      *
-     * @throws IOException
+     * @throws IOException Throws when the buffer failed to send or read the message
      */
     public void disconnect() throws IOException {
         if (socket != null && !socket.isClosed() && socket.isConnected()) {
@@ -72,7 +72,7 @@ public class OpenRGBClient {
      * Retrieves the amount of controllers from the OpenRGB Server
      *
      * @return The amount of controllers from the OpenRGB Server
-     * @throws IOException
+     * @throws IOException Throws when the buffer failed to send or read the message
      */
     public int getControllerCount() throws IOException {
         socketLock.lock();
@@ -90,7 +90,7 @@ public class OpenRGBClient {
      *
      * @param deviceIndex The index of the device to retrieve
      * @return The OpenRGB device associated with the given index
-     * @throws IOException
+     * @throws IOException Throws when the buffer failed to send or read the message
      */
     public OpenRGBDevice getDeviceController(int deviceIndex) throws IOException {
         socketLock.lock();
@@ -162,7 +162,7 @@ public class OpenRGBClient {
      * Retrieves the Protocol Version from the OpenRGB Server
      *
      * @return
-     * @throws IOException
+     * @throws IOException Throws when the buffer failed to send or read the message
      */
     public int getProtocolVersion() throws IOException {
         socketLock.lock();
@@ -179,7 +179,7 @@ public class OpenRGBClient {
      * Grabs the profiles saved on the OpenRGB Server
      *
      * @return The profile names in a ArrayList
-     * @throws IOException
+     * @throws IOException Throws when the buffer failed to send or read the message
      */
     public List<String> getProfileList() throws IOException {
         socketLock.lock();
@@ -212,7 +212,7 @@ public class OpenRGBClient {
      * Saves the profile with the current settings applied on the OpenRGB Server with the specified name
      *
      * @param name The profile name to be saved under
-     * @throws IOException
+     * @throws IOException Throws when the buffer failed to send or read the message
      */
     public void saveProfile(String name) throws IOException {
         socketLock.lock();
@@ -230,7 +230,7 @@ public class OpenRGBClient {
      * Loads the profile that is saved on the OpenRGB Server with the specified name
      *
      * @param name The profile name to be loaded on the OpenRGB Server
-     * @throws IOException
+     * @throws IOException Throws when the buffer failed to send or read the message
      */
     public void loadProfile(String name) throws IOException {
         socketLock.lock();
@@ -248,7 +248,7 @@ public class OpenRGBClient {
      * Deletes the profile that is saved on the OpenRGB Server with the specified name
      *
      * @param name The profile name to be deleted on the OpenRGB Server
-     * @throws IOException
+     * @throws IOException Throws when the buffer failed to send or read the message
      */
     public void deleteProfile(String name) throws IOException {
         socketLock.lock();
@@ -266,7 +266,7 @@ public class OpenRGBClient {
      * Retrieves the Plugins that is installed on the OpenRGB Server
      *
      * @return The list of plugins in an ArrayList
-     * @throws IOException
+     * @throws IOException Throws when the buffer failed to send or read the message
      */
     public List<OpenRGBPlugin> getPluginList() throws IOException {
         socketLock.lock();
@@ -300,7 +300,7 @@ public class OpenRGBClient {
      * @param deviceIndex The device under its index
      * @param zoneIndex The zone under its index
      * @param newSize The new size to apply to the zone
-     * @throws IOException
+     * @throws IOException Throws when the buffer failed to send or read the message
      */
     public void resizeZone(int deviceIndex, int zoneIndex, int newSize) throws IOException {
         socketLock.lock();
@@ -318,7 +318,7 @@ public class OpenRGBClient {
      *
      * @param deviceIndex The device under its index
      * @param startIndex The start segment index
-     * @throws IOException
+     * @throws IOException Throws when the buffer failed to send or read the message
      */
     public void clearSegments(int deviceIndex, int startIndex) throws IOException {
         socketLock.lock();
@@ -337,7 +337,7 @@ public class OpenRGBClient {
      * @param deviceIndex The device under its index
      * @param zoneIndex The zone under its index
      * @param segment The segment built using it's static class Builder
-     * @throws IOException
+     * @throws IOException Throws when the buffer failed to send or read the message
      */
     public void addSegment(int deviceIndex, int zoneIndex, OpenRGBSegment segment) throws IOException {
         socketLock.lock();
@@ -364,7 +364,7 @@ public class OpenRGBClient {
      *
      * @param deviceIndex The device under its index
      * @param colors The colors to be updated in a List
-     * @throws IOException
+     * @throws IOException Throws when the buffer failed to send or read the message
      */
     public void updateLEDs(int deviceIndex, List<OpenRGBColor> colors) throws IOException {
         socketLock.lock();
@@ -396,7 +396,7 @@ public class OpenRGBClient {
      * @param deviceIndex The device under its index
      * @param zoneIndex The zone under its index
      * @param colors The colors to be updated in a List
-     * @throws IOException
+     * @throws IOException Throws when the buffer failed to send or read the message
      */
     public void updateZoneLEDs(int deviceIndex, int zoneIndex, List<OpenRGBColor> colors) throws IOException {
         socketLock.lock();
@@ -429,7 +429,7 @@ public class OpenRGBClient {
      * @param deviceIndex The device under its index
      * @param ledIndex The led under its index
      * @param color The color to be updated
-     * @throws IOException
+     * @throws IOException Throws when the buffer failed to send or read the message
      */
     public void updateLED(int deviceIndex, int ledIndex, OpenRGBColor color) throws IOException {
         socketLock.lock();
@@ -456,7 +456,7 @@ public class OpenRGBClient {
      * Sets the custom mode to the device
      *
      * @param deviceIndex The device under its index
-     * @throws IOException
+     * @throws IOException Throws when the buffer failed to send or read the message
      */
     public void setCustomMode(int deviceIndex) throws IOException {
         socketLock.lock();
@@ -474,7 +474,7 @@ public class OpenRGBClient {
      * @param deviceIndex The device under its index
      * @param modeIndex The mode under its index
      * @param mode The mode object obtained from retrieving the available modes on the device
-     * @throws IOException
+     * @throws IOException Throws when the buffer failed to send or read the message
      */
     public void updateMode(int deviceIndex, int modeIndex, OpenRGBMode mode) throws IOException {
         socketLock.lock();
@@ -521,7 +521,7 @@ public class OpenRGBClient {
      * @param deviceIndex The device under its index
      * @param modeIndex The mode under its index
      * @param mode The mode object obtained from retrieving the available modes on the device
-     * @throws IOException
+     * @throws IOException Throws when the buffer failed to send or read the message
      */
     public void saveMode(int deviceIndex, int modeIndex, OpenRGBMode mode) throws IOException {
         socketLock.lock();
