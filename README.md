@@ -5,17 +5,26 @@ An updated OpenRGB Java Client made to update for the latest OpenRGB Protocol.
 
 ## Usage
 Gradle
-```css
-dependencyResolutionManagement {
-	repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-	repositories {
-		mavenCentral()
-		maven { url 'https://jitpack.io' }
-	}
+```groovy
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
     implementation 'com.github.LogicismDev:OpenRGB4J:v1.0'
+}
+```
+
+Gradle Kotlin DSL
+```kotlin
+repositories {
+    mavenCentral()
+    maven { url("https://jitpack.io") }
+}
+
+dependencies {
+    implementation("com.github.LogicismDev:OpenRGB4J:v1.0")
 }
 ```
 
