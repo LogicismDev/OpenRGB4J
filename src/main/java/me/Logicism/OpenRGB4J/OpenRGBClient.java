@@ -34,6 +34,7 @@ public class OpenRGBClient {
     }
 
     public void connect() throws IOException {
+        socket = new Socket();
         socket.connect(new InetSocketAddress(ip, port));
         this.in = new BufferedInputStream(socket.getInputStream());
         this.out = new BufferedOutputStream(socket.getOutputStream());
