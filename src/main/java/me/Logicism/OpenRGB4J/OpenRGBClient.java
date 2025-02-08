@@ -77,15 +77,15 @@ public class OpenRGBClient {
             String name = readASCII(buffer);
             deviceBuilder.setName(name);
             String vendor = readASCII(buffer);
-            deviceBuilder.setName(vendor);
+            deviceBuilder.setVendorName(vendor);
             String description = readASCII(buffer);
-            deviceBuilder.setName(description);
+            deviceBuilder.setDescription(description);
             String version = readASCII(buffer);
-            deviceBuilder.setName(version);
+            deviceBuilder.setVersion(version);
             String serial = readASCII(buffer);
-            deviceBuilder.setName(serial);
+            deviceBuilder.setSerial(serial);
             String location = readASCII(buffer);
-            deviceBuilder.setName(location);
+            deviceBuilder.setLocation(location);
 
             int modesLength = readUnsignedShort(buffer);
             int activeMode = buffer.getInt();
