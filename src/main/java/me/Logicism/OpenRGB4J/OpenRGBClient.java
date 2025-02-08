@@ -516,7 +516,7 @@ public class OpenRGBClient {
         byte[] charbytes = new byte[length];
         buffer.get(charbytes);
 
-        return new String(charbytes, 0, length - 1, StandardCharsets.US_ASCII);
+        return new String(charbytes, 0, length, StandardCharsets.US_ASCII);
     }
 
     private byte[] createHeader(OpenRGBPacket packet, int deviceIndex, byte[] data) {
