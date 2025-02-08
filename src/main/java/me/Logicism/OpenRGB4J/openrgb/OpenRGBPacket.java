@@ -10,7 +10,6 @@ public enum OpenRGBPacket {
     NET_PACKET_ID_REQUEST_LOAD_PROFILE(152),
     NET_PACKET_ID_REQUEST_DELETE_PROFILE(153),
     NET_PACKET_ID_REQUEST_PLUGIN_LIST(200),
-    NET_PACKET_ID_PLUGIN_SPECIFIC(201),
     NET_PACKET_ID_RGBCONTROLLER_RESIZEZONE(1000),
     NET_PACKET_ID_RGBCONTROLLER_CLEARSEGMENTS(1001),
     NET_PACKET_ID_RGBCONTROLLER_ADDSEGMENT(1002),
@@ -27,6 +26,11 @@ public enum OpenRGBPacket {
         this.packetID = packetID;
     }
 
+    /**
+     * Returns the Packet ID associated with the OpenRGBPacket enum
+     *
+     * @return The Packet ID
+     */
     public int getPacketID() {
         return packetID;
     }

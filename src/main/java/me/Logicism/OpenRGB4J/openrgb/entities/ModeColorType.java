@@ -1,5 +1,8 @@
 package me.Logicism.OpenRGB4J.openrgb.entities;
 
+/**
+ * The ModeColorType enum class
+ */
 public enum ModeColorType {
     NONE("None"),
     PER_LED("Per LED"),
@@ -12,6 +15,12 @@ public enum ModeColorType {
         this.name = name;
     }
 
+    /**
+     * Parses an integer value to a ModeColorType enum
+     *
+     * @param value The value of the ModeColorType enum
+     * @return The ModeColorType enum
+     */
     public static ModeColorType parseValue(int value) {
         if (value >= ModeColorType.values().length)
             return null;
@@ -19,6 +28,11 @@ public enum ModeColorType {
         return ModeColorType.values()[value];
     }
 
+    /**
+     * Retrieves the name associated with the DeviceType enum
+     *
+     * @return The ModeColorType Name
+     */
     public String getName() {
         return name;
     }

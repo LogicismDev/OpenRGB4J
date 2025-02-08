@@ -1,5 +1,8 @@
 package me.Logicism.OpenRGB4J.openrgb.entities;
 
+/**
+ * The DeviceType enum class
+ */
 public enum DeviceType {
     MOTHERBOARD("Motherboard"),
     DRAM("DRAM"),
@@ -28,6 +31,12 @@ public enum DeviceType {
         this.name = name;
     }
 
+    /**
+     * Parses an integer value to a DeviceType enum
+     *
+     * @param value The value of the DeviceType enum
+     * @return The DeviceType enum
+     */
     public static DeviceType parseValue(int value) {
         if (value >= DeviceType.values().length)
             return UNKNOWN;
@@ -35,6 +44,11 @@ public enum DeviceType {
         return DeviceType.values()[value];
     }
 
+    /**
+     * Retrieves the name associated with the DeviceType enum
+     *
+     * @return The DeviceType Name
+     */
     public String getName() {
         return name;
     }
