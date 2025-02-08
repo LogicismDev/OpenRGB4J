@@ -3,7 +3,7 @@
 
 An updated OpenRGB Java Client made to update for the latest OpenRGB Protocol.
 
-### Usage
+## Usage
 Gradle
 ```groovy
 repositories {
@@ -45,7 +45,7 @@ Maven
 </dependencies>
 ```
 
-### Examples
+## Examples
 To start instantiating the OpenRGB client class, use the following code below as an example.
 
 ```java
@@ -81,7 +81,7 @@ try {
 }
 ```
 
-### Credits
+## Credits
 These repos are the inspirations to what made this library possible.
 - https://gitlab.com/CalcProgrammer1/OpenRGB
 - https://gitlab.com/mguimard/openrgb-client
