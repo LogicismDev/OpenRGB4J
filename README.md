@@ -1,5 +1,6 @@
 # OpenRGB4J - OpenRGB Java Client
 [![](https://jitpack.io/v/LogicismDev/OpenRGB4J.svg)](https://jitpack.io/#LogicismDev/OpenRGB4J)
+
 An updated OpenRGB Java Client made to update for the latest OpenRGB Protocol.
 
 ## Usage
