@@ -62,20 +62,18 @@ public class OpenRGBClient {
     public OpenRGBDevice getDeviceController(int deviceIndex) throws IOException {
         socketLock.lock();
         try {
+            OpenRGBDevice.Builder deviceBuilder = new OpenRGBDevice.Builder();
+
             byte[] data = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(protocolVersion).array();
             sendMessage(OpenRGBPacket.NET_PACKET_ID_REQUEST_CONTROLLER_DATA, deviceIndex, data);
 
             ByteBuffer buffer = read();
 
             // Unused Data Length
-            int dataLength = Byte.toUnsignedInt(buffer.get());
-
-            OpenRGBDevice.Builder deviceBuilder = new OpenRGBDevice.Builder();
-
-            int rawRGBType = buffer.getInt();
-            DeviceType type = DeviceType.parseValue(rawRGBType);
+            int dataLength = readUnsignedInt(buffer);
+            int rawType = buffer.getInt();
+            DeviceType type = DeviceType.parseValue(rawType);
             deviceBuilder.setOpenRGBType(type);
-
             String name = readASCII(buffer);
             deviceBuilder.setName(name);
             String vendor = readASCII(buffer);
@@ -116,7 +114,6 @@ public class OpenRGBClient {
             }
 
             int colorsLength = readUnsignedShort(buffer);
-
             for (int i = 0; i < colorsLength; i++) {
                 OpenRGBColor color = readRGBColor(buffer);
                 deviceBuilder.addColor(color);
@@ -150,7 +147,7 @@ public class OpenRGBClient {
             ByteBuffer buffer = read();
 
             // Unused Data Length
-            int dataLength = Byte.toUnsignedInt(buffer.get());
+            int dataLength = readUnsignedInt(buffer);
             int numProfiles = readUnsignedShort(buffer);
 
             for (int i = 0; i < numProfiles; i++) {
@@ -213,7 +210,7 @@ public class OpenRGBClient {
             ByteBuffer buffer = read();
 
             // Unused Data Length
-            int dataLength = Byte.toUnsignedInt(buffer.get());
+            int dataLength = readUnsignedInt(buffer);
             int numPlugins = readUnsignedShort(buffer);
 
             for (int i = 0; i < numPlugins; i++) {
@@ -410,33 +407,31 @@ public class OpenRGBClient {
         builder.setName(name);
         int value = buffer.getInt();
         builder.setValue(value);
-        int flags = (buffer.getInt() & 0xff);
+        int flags = readUnsignedInt(buffer);
         builder.setFlags(flags);
-        int speedMin = (buffer.getInt() & 0xff);
+        int speedMin = readUnsignedInt(buffer);
         builder.setSpeedMin(speedMin);
-        int speedMax = (buffer.getInt() & 0xff);
+        int speedMax = readUnsignedInt(buffer);
         builder.setSpeedMax(speedMax);
-        int brightnessMin = (buffer.getInt() & 0xff);
+        int brightnessMin = readUnsignedInt(buffer);
         builder.setBrightnessMin(brightnessMin);
-        int brightnessMax = (buffer.getInt() & 0xff);
+        int brightnessMax = readUnsignedInt(buffer);
         builder.setBrightnessMax(brightnessMax);
-        int colorsMin = (buffer.getInt() & 0xff);
+        int colorsMin = readUnsignedInt(buffer);
         builder.setColorsMin(colorsMin);
-        int colorsMax = (buffer.getInt() & 0xff);
+        int colorsMax = readUnsignedInt(buffer);
         builder.setColorsMax(colorsMax);
-        int speed = (buffer.getInt() & 0xff);
+        int speed = readUnsignedInt(buffer);
         builder.setSpeed(speed);
-        int brightness = (buffer.getInt() & 0xff);
+        int brightness = readUnsignedInt(buffer);
         builder.setBrightness(brightness);
-        ModeDirection direction = ModeDirection.parseValue((buffer.getInt() & 0xff));
+        ModeDirection direction = ModeDirection.parseValue(readUnsignedInt(buffer));
         builder.setDirection(direction);
-        ModeColorType colorType = ModeColorType.parseValue((buffer.getInt() & 0xff));
+        ModeColorType colorType = ModeColorType.parseValue(readUnsignedInt(buffer));
         builder.setColorType(colorType);
-        int numColors = (buffer.getShort() & 0xff);
-
+        int numColors = readUnsignedShort(buffer);
         for (int i = 0; i < numColors; i++) {
             OpenRGBColor color = readRGBColor(buffer);
-
             builder.addColor(color);
         }
 
@@ -450,25 +445,53 @@ public class OpenRGBClient {
         builder.setName(name);
         ZoneType zoneType = ZoneType.parseValue(buffer.getInt());
         builder.setZoneType(zoneType);
-        int ledsMin = (buffer.getInt() & 0xff);
+        int ledsMin = readUnsignedInt(buffer);
         builder.setLedsMin(ledsMin);
-        int ledsMax = (buffer.getInt() & 0xff);
+        int ledsMax = readUnsignedInt(buffer);
         builder.setLedsMax(ledsMax);
-        int ledsCount = (buffer.getInt() & 0xff);
+        int ledsCount = readUnsignedInt(buffer);
         builder.setLedsCount(ledsCount);
         int matrixLength = readUnsignedShort(buffer);
         builder.setMatrixLength(matrixLength);
-        int matrixHeight = Byte.toUnsignedInt(buffer.get());
+        int matrixHeight = 0;
+        int matrixWidth = 0;
+        builder.setMatrixWidth(matrixWidth);
+
+        if (matrixLength > 0) {
+            matrixHeight = readUnsignedInt(buffer);
+            matrixWidth = readUnsignedInt(buffer);
+        }
+
         builder.setMatrixHeight(matrixHeight);
-        int matrixWidth = Byte.toUnsignedInt(buffer.get());
         builder.setMatrixWidth(matrixWidth);
 
         int[][] matrixData = new int[matrixHeight][matrixWidth];
         for (int i = 0; i < matrixHeight; i++) {
             for (int i1 = 0; i1 < matrixWidth; i1++) {
-                matrixData[i][i1] = (buffer.getInt() & 0xff);
+                matrixData[i][i1] = readUnsignedInt(buffer);
             }
         }
+
+        int numSegments = readUnsignedShort(buffer);
+        for (int i = 0; i < numSegments; i++) {
+            OpenRGBSegment segment = readSegment(buffer);
+            builder.addSegment(segment);
+        }
+
+        return builder.build();
+    }
+
+    private OpenRGBSegment readSegment(ByteBuffer buffer) {
+        OpenRGBSegment.Builder builder = new OpenRGBSegment.Builder();
+
+        String name = readASCII(buffer);
+        builder.setName(name);
+        ZoneType zoneType = ZoneType.parseValue(buffer.get());
+        builder.setType(zoneType);
+        int startIndex = readUnsignedInt(buffer);
+        builder.setStartIndex(startIndex);
+        int ledsCount = readUnsignedInt(buffer);
+        builder.setLEDsLength(ledsCount);
 
         return builder.build();
     }
@@ -478,7 +501,7 @@ public class OpenRGBClient {
 
         String name = readASCII(buffer);
         builder.setName(name);
-        int value = (buffer.getInt() & 0xff);
+        int value = readUnsignedInt(buffer);
         builder.setValue(value);
 
         return builder.build();
@@ -503,16 +526,16 @@ public class OpenRGBClient {
         builder.setDescription(description);
         String version = readASCII(buffer);
         builder.setVersion(version);
-        int index = Byte.toUnsignedInt(buffer.get());
+        int index = readUnsignedInt(buffer);
         builder.setIndex(index);
-        int protocolVersion = Byte.toUnsignedInt(buffer.get());
+        int protocolVersion = readUnsignedInt(buffer);
         builder.setProtocolVersion(protocolVersion);
 
         return builder.build();
     }
 
     private String readASCII(ByteBuffer buffer) {
-        int length = (buffer.getShort() & 0xff);
+        int length = readUnsignedShort(buffer);
         byte[] charbytes = new byte[length];
         buffer.get(charbytes);
 
@@ -562,7 +585,11 @@ public class OpenRGBClient {
     }
 
     private int readUnsignedShort(ByteBuffer buffer) {
-        return buffer.getShort() & 0xff;
+        return (buffer.getShort() & 0xff);
+    }
+
+    private int readUnsignedInt(ByteBuffer buffer) {
+        return (buffer.getInt() & 0xff);
     }
 
     public byte[] readFully(InputStream is, int length) throws IOException {

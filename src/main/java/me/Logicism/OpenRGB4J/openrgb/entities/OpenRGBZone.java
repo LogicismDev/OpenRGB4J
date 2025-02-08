@@ -1,5 +1,8 @@
 package me.Logicism.OpenRGB4J.openrgb.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class OpenRGBZone {
 
     private ZoneType zoneType;
@@ -12,11 +15,14 @@ public class OpenRGBZone {
     private int matrixLength;
     private int matrixHeight;
     private int matrixWidth;
+    private int zoneFlags;
 
     private int[][] matrixData;
 
+    private List<OpenRGBSegment> segments;
+
     public OpenRGBZone(ZoneType zoneType, String name, int ledsMin, int ledsMax, int ledsCount, int matrixLength, int matrixHeight,
-                       int matrixWidth, int[][] matrixData) {
+                       int matrixWidth, int[][] matrixData, List<OpenRGBSegment> segments, int zoneFlags) {
         this.zoneType = zoneType;
         this.name = name;
         this.ledsMin = ledsMin;
@@ -26,6 +32,8 @@ public class OpenRGBZone {
         this.matrixHeight = matrixHeight;
         this.matrixWidth = matrixWidth;
         this.matrixData = matrixData;
+        this.segments = segments;
+        this.zoneFlags = zoneFlags;
     }
 
     public ZoneType getZoneType() {
@@ -76,8 +84,11 @@ public class OpenRGBZone {
         private int matrixLength;
         private int matrixHeight;
         private int matrixWidth;
+        private int zoneFlags;
 
         private int[][] matrixData;
+
+        private List<OpenRGBSegment> segments = new ArrayList<>();
 
         public void setZoneType(ZoneType zoneType) {
             this.zoneType = zoneType;
@@ -111,9 +122,17 @@ public class OpenRGBZone {
             this.matrixWidth = matrixWidth;
         }
 
+        public void addSegment(OpenRGBSegment segment) {
+            segments.add(segment);
+        }
+
+        public void setZoneFlags(int zoneFlags) {
+            this.zoneFlags = zoneFlags;
+        }
+
         public OpenRGBZone build() {
             return new OpenRGBZone(zoneType, name, ledsMin, ledsMax, ledsCount, matrixLength, matrixHeight, matrixWidth,
-                    matrixData);
+                    matrixData, segments, zoneFlags);
         }
     }
 }
