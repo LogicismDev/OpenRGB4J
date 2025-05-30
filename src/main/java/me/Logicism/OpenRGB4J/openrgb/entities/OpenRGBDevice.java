@@ -23,6 +23,9 @@ public class OpenRGBDevice {
     private List<OpenRGBZone> zones;
     private List<OpenRGBLED> leds;
     private List<OpenRGBColor> colors;
+    private List<OpenRGBLEDAltName> ledAltNames;
+
+    private int flags;
 
     /**
      * Instantiates the OpenRGBDevice Class
@@ -39,10 +42,12 @@ public class OpenRGBDevice {
      * @param zones       The devices zones in a List
      * @param leds        The devices LEDs in a List
      * @param colors      The devices colors in a List
+     * @param ledAltNames The devices LED Alternate Names in a List
+     * @param flags       The devices flags
      */
     public OpenRGBDevice(DeviceType type, String name, String vendorName, String description, String version,
                          String serial, String location, OpenRGBMode mode, List<OpenRGBMode> modes, List<OpenRGBZone> zones,
-                         List<OpenRGBLED> leds, List<OpenRGBColor> colors) {
+                         List<OpenRGBLED> leds, List<OpenRGBColor> colors, List<OpenRGBLEDAltName> ledAltNames, int flags) {
         this.type = type;
         this.name = name;
         this.vendorName = vendorName;
@@ -55,6 +60,8 @@ public class OpenRGBDevice {
         this.zones = zones;
         this.leds = leds;
         this.colors = colors;
+        this.ledAltNames = ledAltNames;
+        this.flags = flags;
     }
 
     /**
@@ -185,6 +192,9 @@ public class OpenRGBDevice {
         private List<OpenRGBZone> zones = new ArrayList<>();
         private List<OpenRGBLED> leds = new ArrayList<>();
         private List<OpenRGBColor> colors = new ArrayList<>();
+        private List<OpenRGBLEDAltName> ledAltNames = new ArrayList<>();
+
+        private int flags;
 
         /**
          * Sets the DeviceType enum
@@ -295,12 +305,30 @@ public class OpenRGBDevice {
         }
 
         /**
+         * Add the devices LED Alternate name
+         *
+         * @param ledAltName The devices current LED Alternate name
+         */
+        public void addLEDAltName(OpenRGBLEDAltName ledAltName) {
+            this.ledAltNames.add(ledAltName);
+        }
+
+        /**
+         * Add the devices flags
+         *
+         * @param flags The devices flags
+         */
+        public void setFlags(int flags) {
+            this.flags = flags;
+        }
+
+        /**
          * Builds the Builder into a OpenRGBDevice object
          *
          * @return The OpenRGBDevice object
          */
         public OpenRGBDevice build() {
-            return new OpenRGBDevice(type, name, vendorName, description, version, serial, location, mode, modes, zones, leds, colors);
+            return new OpenRGBDevice(type, name, vendorName, description, version, serial, location, mode, modes, zones, leds, colors, ledAltNames, flags);
         }
 
     }

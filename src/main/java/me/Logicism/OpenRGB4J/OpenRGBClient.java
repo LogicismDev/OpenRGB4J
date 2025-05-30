@@ -152,6 +152,15 @@ public class OpenRGBClient {
                 deviceBuilder.addColor(color);
             }
 
+            int numLedAltNamesLength = readUnsignedShort(buffer);
+            for (int i = 0; i < numLedAltNamesLength; i++) {
+                OpenRGBLEDAltName ledAltName = readLEDAlternateName(buffer);
+                deviceBuilder.addLEDAltName(ledAltName);
+            }
+
+            int flags = readUnsignedInt(buffer);
+            deviceBuilder.setFlags(flags);
+
             return deviceBuilder.build();
         } finally {
             socketLock.unlock();
@@ -168,7 +177,8 @@ public class OpenRGBClient {
         socketLock.lock();
 
         try {
-            sendMessage(OpenRGBPacket.NET_PACKET_ID_REQUEST_PROTOCOL_VERSION, 0, null);
+            byte[] data = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(5).array();
+            sendMessage(OpenRGBPacket.NET_PACKET_ID_REQUEST_PROTOCOL_VERSION, 0, data);
             return read().getInt();
         } finally {
             socketLock.unlock();
@@ -639,6 +649,9 @@ public class OpenRGBClient {
             builder.addSegment(segment);
         }
 
+        int zoneFlags = readUnsignedInt(buffer);
+        builder.setZoneFlags(zoneFlags);
+
         return builder.build();
     }
 
@@ -664,6 +677,15 @@ public class OpenRGBClient {
         builder.setName(name);
         int value = readUnsignedInt(buffer);
         builder.setValue(value);
+
+        return builder.build();
+    }
+
+    private OpenRGBLEDAltName readLEDAlternateName(ByteBuffer buffer) {
+        OpenRGBLEDAltName.Builder builder = new OpenRGBLEDAltName.Builder();
+
+        String name = readASCII(buffer);
+        builder.setName(name);
 
         return builder.build();
     }
