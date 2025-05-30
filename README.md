@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.LogicismDev:OpenRGB4J:v1.0'
+    implementation 'com.github.LogicismDev:OpenRGB4J:v1.1'
 }
 ```
 
@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.LogicismDev:OpenRGB4J:v1.0")
+    implementation("com.github.LogicismDev:OpenRGB4J:v1.1")
 }
 ```
 
@@ -40,7 +40,7 @@ Maven
     <dependency>
         <groupId>com.github.LogicismDev</groupId>
         <artifactId>OpenRGB4J</artifactId>
-        <version>v1.0</version>
+        <version>v1.1</version>
     </dependency>
 </dependencies>
 ```
